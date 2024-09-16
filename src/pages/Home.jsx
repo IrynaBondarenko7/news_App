@@ -3,6 +3,7 @@ import { MainArticle } from "../components/MainArticle";
 import { PopularArticles } from "../components/PopularArticles";
 import { getArticles } from "../api";
 import { LatestArticles } from "../components/LatestArticles";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   const [articles, setArticles] = useState([]);
@@ -36,6 +37,9 @@ export const Home = () => {
         <PopularArticles articles={articles} />
       </div>
       <LatestArticles articles={articles} />
+      <Link to="/articles" className="text-blue-700 text-center mt-6 block">
+        View all articles
+      </Link>
     </>
   );
 };
