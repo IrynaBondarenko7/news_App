@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getArticles } from "../api";
+import { Link } from "react-router-dom";
 
 export const ArticlesList = () => {
   const [articles, setArticles] = useState([]);
@@ -28,12 +29,15 @@ export const ArticlesList = () => {
   return (
     <ul className="flex flex-col gap-6">
       {articles.map((article) => {
+        const url = `/articles/${article.article_id}`;
         return (
           <li
             key={article.article_id}
             className="flex gap-6 flex-col justify-center items-center"
           >
-            <h2 className="text-sm mt-2.5">{article.title}</h2>
+            <Link to={url}>
+              <h2 className="text-sm mt-2.5">{article.title}</h2>
+            </Link>
             <img
               src={article.article_img_url}
               alt="article image"
