@@ -14,3 +14,14 @@ export const getArticles = () => {
       return err;
     });
 };
+
+export const geArticleById = (article_id) => {
+  return apiInstance
+    .get(`/articles/${article_id}`)
+    .then(({ data }) => {
+      return data.article;
+    })
+    .catch((err) => {
+      return err;
+    });
+};
