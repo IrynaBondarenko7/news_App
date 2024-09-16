@@ -1,9 +1,31 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getArticles } from "../api";
 
-export const LatestArticles = ({ articles }) => {
-  const latestArticles = articles
-    .toSorted((a, b) => a.created_at - b.created_at)
-    .slice(1, 5);
+export const LatestArticles = () => {
+  const [latestArticles, setLatestArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    getArticles("created_at")
+      .then((response) => {
+        setIsLoading(false);
+        setLatestArticles(response.slice(0, 4));
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setIsError(true);
+      });
+  }, []);
+
+  if (isLoading) {
+    return <p>Loading....</p>;
+  }
+
+  if (isError) {
+    return <p>Something went wrong</p>;
+  }
 
   return (
     <div>

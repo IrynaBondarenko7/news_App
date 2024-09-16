@@ -4,9 +4,13 @@ const apiInstance = axios.create({
   baseURL: "https://news-api-4de7.onrender.com/api",
 });
 
-export const getArticles = () => {
+export const getArticles = (sort_by) => {
   return apiInstance
-    .get("/articles")
+    .get("/articles", {
+      params: {
+        sort_by: sort_by,
+      },
+    })
     .then(({ data }) => {
       return data.articles;
     })

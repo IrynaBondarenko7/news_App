@@ -36,7 +36,7 @@ export const Home = () => {
         <MainArticle articles={articles} />
         <PopularArticles articles={articles} />
       </div>
-      <LatestArticles articles={articles} />
+      <LatestArticles />
       <Link to="/articles" className="text-blue-700 text-center mt-6 block">
         View all articles
       </Link>
