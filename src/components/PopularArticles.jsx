@@ -8,7 +8,7 @@ export const PopularArticles = ({ articles }) => {
   const defaultArticles = articles.slice(1, 4);
 
   return (
-    <div>
+    <section>
       <h2>Most Popular</h2>
       {popularArticles.length > 0 && (
         <ul>
@@ -41,6 +41,6 @@ export const PopularArticles = ({ articles }) => {
           })}
         </ul>
       )}
-    </div>
+    </section>
   );
 };

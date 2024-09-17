@@ -28,7 +28,7 @@ export const LatestArticles = () => {
   }
 
   return (
-    <div>
+    <section>
       <h2>The Latest</h2>
       <ul className="flex flex-col gap-6">
         {latestArticles.map((article) => {
@@ -54,6 +54,6 @@ export const LatestArticles = () => {
           );
         })}
       </ul>
-    </div>
+    </section>
   );
 };
