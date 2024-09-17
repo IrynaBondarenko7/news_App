@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { getCommentsByArticleId } from "../api";
 
-export const Comments = ({ article_id }) => {
-  const [comments, setComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+export const Comments = ({ comments, isLoading, isError }) => {
+  // const [comments, setComments] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    getCommentsByArticleId(article_id)
-      .then((response) => {
-        setComments(response);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsError(true);
-        setIsLoading(false);
-      });
-  });
+  // useEffect(() => {
+  //   getCommentsByArticleId(article_id)
+  //     .then((response) => {
+  //       setComments(response);
+  //       setIsLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setIsError(true);
+  //       setIsLoading(false);
+  //     });
+  // });
 
   if (isLoading) {
     return <p>Loading....</p>;
