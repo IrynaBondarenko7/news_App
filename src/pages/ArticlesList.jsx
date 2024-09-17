@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getArticles } from "../api";
 import { Link } from "react-router-dom";
-import { ShowCommentsBtn } from "../components/ShowCommentsBtn";
+import { PiEyesFill } from "react-icons/pi";
+import { SlLike } from "react-icons/sl";
 
 export const ArticlesList = () => {
   const [articles, setArticles] = useState([]);
@@ -32,11 +33,13 @@ export const ArticlesList = () => {
     <ul className="flex flex-col gap-6 justify-center items-center">
       {articles.map((article) => {
         const url = `/articles/${article.article_id}`;
+        const date = new Date(article.created_at).toLocaleDateString();
+        const time = new Date(article.created_at).toLocaleTimeString();
 
         return (
           <li
             key={article.article_id}
-            className="flex gap-6 flex-col justify-center items-center w-full xl:w-[500px]"
+            className="flex gap-6 flex-col justify-center items-center w-full xl:w-[500px] bg-indigo-100 rounded-lg p-5"
           >
             <Link to={url}>
               <h2 className="text-sm mt-2.5 underline">{article.title}</h2>
@@ -50,20 +53,30 @@ export const ArticlesList = () => {
             <div className="flex gap-6">
               <p>Topic: {article.topic}</p>
               <p>Posted by: {article.author}</p>
+              <p>
+                {date} {time}
+              </p>
             </div>
             <div className="flex w-full xl:w-[500px] justify-between">
-              <p>Votes {article.votes}</p>
+              <Link to={url} className="flex items-center gap-2">
+                <p className="mt-2">Votes</p>
+                <div className="relative">
+                  <p className="absolute top-[62%] left-1/2 -translate-y-1/2 -translate-x-1/2">
+                    {article.votes}
+                  </p>
+                  <SlLike size={40} />
+                </div>
+              </Link>
+
               <p>Comments {article.comment_count}</p>
             </div>
-            {article.comment_count > 0 && (
-              <ShowCommentsBtn article_id={article.article_id} />
-            )}
-            <p>Leave comment</p>
-            <textarea
-              name=""
-              id=""
-              className="border-2 border-black w-full xl:w-[500px]"
-            ></textarea>
+            <Link
+              to={url}
+              className="flex gap-3 items-center bg-white text-black px-3 py-2 rounded-lg"
+            >
+              <PiEyesFill size={24} />
+              <p>View comments</p>
+            </Link>
           </li>
         );
       })}

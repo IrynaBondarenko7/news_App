@@ -40,3 +40,14 @@ export const getCommentsByArticleId = (article_id) => {
       return err;
     });
 };
+
+export const voteArticleById = (article_id, body) => {
+  return apiInstance
+    .patch(`/articles/${article_id}`, body)
+    .then(({ data }) => {
+      return data;
+    })
+    .catch((err) => {
+      return err;
+    });
+};
