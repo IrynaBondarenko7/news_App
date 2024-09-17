@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { getArticleById, getCommentsByArticleId } from "../api";
+import { getArticleById } from "../api";
 import { useParams } from "react-router-dom";
+import { Comments } from "../components/Comments";
 
 export const ArticlePage = () => {
   const { article_id } = useParams();
   const [article, setArticle] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [comments, setComments] = useState([]);
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
 
   useEffect(() => {
@@ -20,10 +20,6 @@ export const ArticlePage = () => {
         setIsLoading(false);
         setIsError(true);
       });
-
-    getCommentsByArticleId(article_id).then((response) => {
-      setComments(response);
-    });
   }, [article_id]);
 
   const showComments = () => {
@@ -53,34 +49,28 @@ export const ArticlePage = () => {
         </div>
       </div>
       <p>Votes {article.votes}</p>
-      <p>
-        Comments <span>{comments.length}</span>
-      </p>
-      {comments.length > 0 && (
-        <button type="button" onClick={showComments} className="text-blue-600">
-          {!isCommentsVisible && "Show all comments"}
-          {isCommentsVisible && "Hide comments"}
-        </button>
-      )}
-      {isCommentsVisible && (
-        <ul>
-          {comments.map((comment) => {
-            const date = new Date(comment.created_at).toLocaleDateString();
-            const time = new Date(comment.created_at).toLocaleTimeString();
-            return (
-              <li key={comment.comment_id}>
-                <h3>{comment.author}</h3>
-                <p>{comment.body}</p>
-                <p>{date}</p>
-                <p>{time}</p>
-                <p>{comment.votes}</p>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      <div className="flex justify-between">
+        <p>
+          Comments <span>{article.comment_count}</span>
+        </p>
+        {article.comment_count > 0 && (
+          <button
+            type="button"
+            onClick={showComments}
+            className="text-blue-600"
+          >
+            {!isCommentsVisible && "Show all comments"}
+            {isCommentsVisible && "Hide comments"}
+          </button>
+        )}
+      </div>
+      {isCommentsVisible && <Comments article_id={article.article_id} />}
       <p>Leave comment</p>
-      <textarea name="" id="" className="border-2 border-black"></textarea>
+      <textarea
+        name=""
+        id=""
+        className="border-2 border-black w-full"
+      ></textarea>
     </div>
   );
 };
