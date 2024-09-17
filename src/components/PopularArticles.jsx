@@ -8,8 +8,10 @@ export const PopularArticles = ({ articles }) => {
   const defaultArticles = articles.slice(1, 4);
 
   return (
-    <div>
-      <h2>Most Popular</h2>
+    <section className="hidden md:block">
+      <h2 className="text-lg border-b-2 border-blue-900 w-[110px] mb-5">
+        Most Popular
+      </h2>
       {popularArticles.length > 0 && (
         <ul>
           {popularArticles.map((article) => {
@@ -41,6 +43,6 @@ export const PopularArticles = ({ articles }) => {
           })}
         </ul>
       )}
-    </div>
+    </section>
   );
 };

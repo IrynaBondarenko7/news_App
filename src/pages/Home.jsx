@@ -32,7 +32,7 @@ export const Home = () => {
 
   return (
     <>
-      <div className="flex flex-row gap-6">
+      <div className="flex flex-row gap-6 xl:gap-20">
         <MainArticle articles={articles} />
         <PopularArticles articles={articles} />
       </div>

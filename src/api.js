@@ -19,11 +19,22 @@ export const getArticles = (sort_by) => {
     });
 };
 
-export const geArticleById = (article_id) => {
+export const getArticleById = (article_id) => {
   return apiInstance
     .get(`/articles/${article_id}`)
     .then(({ data }) => {
       return data.article;
+    })
+    .catch((err) => {
+      return err;
+    });
+};
+
+export const getCommentsByArticleId = (article_id) => {
+  return apiInstance
+    .get(`/articles/${article_id}/comments`)
+    .then(({ data }) => {
+      return data.comments;
     })
     .catch((err) => {
       return err;

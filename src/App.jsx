@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <Header />
-      <main className="mx-auto container">
+      <main className="container">
         <RoutesList />
       </main>
       <Footer />
