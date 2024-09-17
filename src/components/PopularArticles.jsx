@@ -21,7 +21,7 @@ export const PopularArticles = ({ articles }) => {
                 <li className="w-44">
                   <img src={article.article_img_url} alt="article image" />
                   <h2 className="text-sm mt-2.5">{article.title}</h2>
-                  <p>{article.votes}</p>
+                  <p>Votes: {article.votes}</p>
                 </li>
               </Link>
             );

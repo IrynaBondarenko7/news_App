@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { getArticleById } from "../api";
+import { getArticleById, voteArticleById } from "../api";
 import { useParams } from "react-router-dom";
+import { SlLike } from "react-icons/sl";
 import { Comments } from "../components/Comments";
 
 export const ArticlePage = () => {
@@ -9,11 +10,13 @@ export const ArticlePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
+  const [votes, setVotes] = useState(0);
 
   useEffect(() => {
     getArticleById(article_id)
       .then((response) => {
         setArticle(response);
+        setVotes(response.votes);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -24,6 +27,17 @@ export const ArticlePage = () => {
 
   const showComments = () => {
     setIsCommentsVisible(!isCommentsVisible);
+  };
+
+  const onLikeArticleBtnClick = (id) => {
+    const body = { inc_votes: 1 };
+    voteArticleById(id, body).then((response) => {
+      setVotes((prevVotes) => {
+        let newVotes = prevVotes;
+        newVotes += 1;
+        return newVotes;
+      });
+    });
   };
 
   if (isLoading) {
@@ -42,13 +56,27 @@ export const ArticlePage = () => {
           alt="article img"
           className="f-full md:w-[400px]"
         />
-        <div>
-          <h1 className="text-center mb-4">{article.title}</h1>
-          <p>Topic: {article.topic}</p>
-          <p>Posted by: {article.author}</p>
+        <div className="flex flex-col justify-between">
+          <div>
+            <h1 className="text-center mb-4">{article.title}</h1>
+            <p>Topic: {article.topic}</p>
+            <p>Posted by: {article.author}</p>
+          </div>
+          <div className="flex gap-6 items-center mt-5">
+            <p>Votes {votes}</p>
+            <button
+              type="button"
+              aria-label="like"
+              onClick={() => {
+                onLikeArticleBtnClick(article.article_id);
+              }}
+            >
+              <SlLike size={24} />
+            </button>
+          </div>
         </div>
       </div>
-      <p>Votes {article.votes}</p>
+
       <div className="flex justify-between mb-4">
         <p>
           Comments <span>{article.comment_count}</span>
