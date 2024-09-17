@@ -51,3 +51,14 @@ export const voteArticleById = (article_id, body) => {
       return err;
     });
 };
+
+export const postNewComment = (article_id, body) => {
+  return apiInstance
+    .post(`/articles/${article_id}/comments`, body)
+    .then(({ data }) => {
+      return data.comment;
+    })
+    .catch((err) => {
+      return err;
+    });
+};

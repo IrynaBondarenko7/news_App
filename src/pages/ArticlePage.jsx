@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
-import { getArticleById, voteArticleById } from "../api";
+import {
+  getArticleById,
+  getCommentsByArticleId,
+  postNewComment,
+  voteArticleById,
+} from "../api";
 import { useParams } from "react-router-dom";
 import { SlLike } from "react-icons/sl";
+import { useForm } from "react-hook-form";
 import { Comments } from "../components/Comments";
 
 export const ArticlePage = () => {
@@ -11,6 +17,16 @@ export const ArticlePage = () => {
   const [isError, setIsError] = useState(false);
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
   const [votes, setVotes] = useState(0);
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(true);
+  const [isCommentsError, setIsCommentsError] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({ mode: "onChange" });
 
   useEffect(() => {
     getArticleById(article_id)
@@ -22,6 +38,21 @@ export const ArticlePage = () => {
       .catch((err) => {
         setIsLoading(false);
         setIsError(true);
+      });
+  }, [article_id]);
+
+  useEffect(() => {
+    getCommentsByArticleId(article_id)
+      .then((response) => {
+        const sortedComments = response.toSorted(
+          (a, b) => new Date(a.created_at) - new Date(b.created_at)
+        );
+        setComments(sortedComments);
+        setIsCommentsLoading(false);
+      })
+      .catch((err) => {
+        setIsCommentsError(true);
+        setIsCommentsLoading(false);
       });
   }, [article_id]);
 
@@ -39,6 +70,28 @@ export const ArticlePage = () => {
       });
     });
   };
+
+  const onSubmit = (data) => {
+    const comment = {
+      username: "jessjelly",
+      body: newComment,
+    };
+    setNewComment("");
+    postNewComment(article_id, comment).then((response) => {
+      setComments((prevComments) => {
+        const commentsArr = [...prevComments];
+        commentsArr.push(response);
+        const sortedComments = commentsArr.toSorted(
+          (a, b) => new Date(a.created_at) - new Date(b.created_at)
+        );
+        return sortedComments;
+      });
+    });
+  };
+
+  watch((data) => {
+    setNewComment(data.text);
+  });
 
   if (isLoading) {
     return <p>Loading....</p>;
@@ -92,13 +145,27 @@ export const ArticlePage = () => {
           </button>
         )}
       </div>
-      {isCommentsVisible && <Comments article_id={article.article_id} />}
+      {isCommentsVisible && (
+        <Comments
+          comments={comments}
+          isLoading={isCommentsLoading}
+          isError={isCommentsError}
+        />
+      )}
       <p className="mt-5">Leave comment</p>
-      <textarea
-        name=""
-        id=""
-        className="border-2 border-black w-full"
-      ></textarea>
+      <form onSubmit={handleSubmit(onSubmit)} className=" w-full">
+        <textarea
+          {...register("text", { required: true, maxLength: 10 })}
+          value={newComment}
+          className="border-2 border-black w-full"
+        />
+        {errors?.text?.type === "required" && <p>This field is required</p>}
+        {errors?.text?.type === "maxLength" && (
+          <p>You have exceeded the maximum number of characters</p>
+        )}
+
+        <button type="submit">Submit</button>
+      </form>
     </section>
   );
 };
