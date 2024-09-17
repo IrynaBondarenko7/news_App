@@ -1,3 +1,7 @@
 export const Footer = () => {
-  return <footer>Footer</footer>;
+  return (
+    <footer>
+      <div className="container footer">Footer</div>
+    </footer>
+  );
 };

@@ -35,21 +35,21 @@ export const ArticlePage = () => {
   }
 
   return (
-    <div>
-      <div className="flex gap-6">
+    <section>
+      <div className="flex gap-6 flex-col md:flex-row">
         <img
           src={article.article_img_url}
           alt="article img"
-          className="w-[400px]"
+          className="f-full md:w-[400px]"
         />
         <div>
-          <h1 className="text-center">{article.title}</h1>
+          <h1 className="text-center mb-4">{article.title}</h1>
           <p>Topic: {article.topic}</p>
           <p>Posted by: {article.author}</p>
         </div>
       </div>
       <p>Votes {article.votes}</p>
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-4">
         <p>
           Comments <span>{article.comment_count}</span>
         </p>
@@ -65,12 +65,12 @@ export const ArticlePage = () => {
         )}
       </div>
       {isCommentsVisible && <Comments article_id={article.article_id} />}
-      <p>Leave comment</p>
+      <p className="mt-5">Leave comment</p>
       <textarea
         name=""
         id=""
         className="border-2 border-black w-full"
       ></textarea>
-    </div>
+    </section>
   );
 };
