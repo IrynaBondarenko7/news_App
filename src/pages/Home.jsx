@@ -23,7 +23,12 @@ export const Home = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading....</p>;
+    return (
+      <p>
+        Opps... we use free Backend hosting and loading takes some time. Please
+        do not leave!
+      </p>
+    );
   }
 
   if (isError) {
