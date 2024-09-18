@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  deleteCommentById,
   getArticleById,
   getCommentsByArticleId,
   postNewComment,
@@ -7,6 +8,7 @@ import {
 } from "../api";
 import { useParams } from "react-router-dom";
 import { SlLike } from "react-icons/sl";
+import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { Comments } from "../components/Comments";
 
@@ -62,13 +64,18 @@ export const ArticlePage = () => {
 
   const onLikeArticleBtnClick = (id) => {
     const body = { inc_votes: 1 };
-    voteArticleById(id, body).then((response) => {
-      setVotes((prevVotes) => {
-        let newVotes = prevVotes;
-        newVotes += 1;
-        return newVotes;
+    voteArticleById(id, body)
+      .then((response) => {
+        setVotes((prevVotes) => {
+          let newVotes = prevVotes;
+          newVotes += 1;
+          return newVotes;
+        });
+        toast.success("thanks for your vote");
+      })
+      .catch((err) => {
+        toast.error("vote has not been added");
       });
-    });
   };
 
   const onSubmit = (data) => {
@@ -77,21 +84,42 @@ export const ArticlePage = () => {
       body: newComment,
     };
     setNewComment("");
-    postNewComment(article_id, comment).then((response) => {
-      setComments((prevComments) => {
-        const commentsArr = [...prevComments];
-        commentsArr.push(response);
-        const sortedComments = commentsArr.toSorted(
-          (a, b) => new Date(a.created_at) - new Date(b.created_at)
-        );
-        return sortedComments;
+    postNewComment(article_id, comment)
+      .then((response) => {
+        setComments((prevComments) => {
+          const commentsArr = [...prevComments];
+          commentsArr.push(response);
+          const sortedComments = commentsArr.toSorted(
+            (a, b) => new Date(a.created_at) - new Date(b.created_at)
+          );
+          return sortedComments;
+        });
+        toast.success("comment added!");
+      })
+      .catch((err) => {
+        toast.error("comment has not been added");
       });
-    });
   };
 
   watch((data) => {
     setNewComment(data.text);
   });
+
+  const onDeleteCommentBtnClick = (id) => {
+    deleteCommentById(id)
+      .then((response) => {
+        setComments((prevComments) => {
+          const filteredComments = prevComments.filter(
+            (comment) => comment.comment_id !== id
+          );
+          return filteredComments;
+        });
+        toast.success("comment deleted!");
+      })
+      .catch((err) => {
+        toast.error("comment has not been deleted");
+      });
+  };
 
   if (isLoading) {
     return <p>Loading....</p>;
@@ -150,12 +178,14 @@ export const ArticlePage = () => {
           comments={comments}
           isLoading={isCommentsLoading}
           isError={isCommentsError}
+          deleteComment={onDeleteCommentBtnClick}
         />
       )}
       <p className="mt-5">Leave comment</p>
       <form onSubmit={handleSubmit(onSubmit)} className=" w-full">
+        <p>User name: jessjelly</p>
         <textarea
-          {...register("text", { required: true, maxLength: 10 })}
+          {...register("text", { required: true, maxLength: 200 })}
           value={newComment}
           className="border-2 border-black w-full"
         />
@@ -166,6 +196,7 @@ export const ArticlePage = () => {
 
         <button type="submit">Submit</button>
       </form>
+      <Toaster position="bottom-center" reverseOrder={false} />
     </section>
   );
 };

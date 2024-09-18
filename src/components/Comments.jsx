@@ -1,25 +1,8 @@
-import { useEffect, useState } from "react";
-import { getCommentsByArticleId } from "../api";
+import { MdDeleteForever } from "react-icons/md";
 
-export const Comments = ({ comments, isLoading, isError }) => {
-  // const [comments, setComments] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [isError, setIsError] = useState(false);
-
-  // useEffect(() => {
-  //   getCommentsByArticleId(article_id)
-  //     .then((response) => {
-  //       setComments(response);
-  //       setIsLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setIsError(true);
-  //       setIsLoading(false);
-  //     });
-  // });
-
+export const Comments = ({ comments, isLoading, isError, deleteComment }) => {
   if (isLoading) {
-    return <p>Loading....</p>;
+    return <p>LOADINGGGGGGGGGGGGGGGGGG....</p>;
   }
 
   if (isError) {
@@ -40,7 +23,17 @@ export const Comments = ({ comments, isLoading, isError }) => {
               </p>
             </div>
             <p>{comment.body}</p>
-            <p>votes: {comment.votes}</p>
+            <div className="flex justify-between">
+              <p>votes: {comment.votes}</p>
+              <button
+                onClick={() => {
+                  deleteComment(comment.comment_id);
+                }}
+                aria-label="delete comment"
+              >
+                <MdDeleteForever size={24} />
+              </button>
+            </div>
           </li>
         );
       })}
