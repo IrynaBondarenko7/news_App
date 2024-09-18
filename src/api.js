@@ -13,21 +13,13 @@ export const getArticles = (sort_by) => {
     })
     .then(({ data }) => {
       return data.articles;
-    })
-    .catch((err) => {
-      return err;
     });
 };
 
 export const getArticleById = (article_id) => {
-  return apiInstance
-    .get(`/articles/${article_id}`)
-    .then(({ data }) => {
-      return data.article;
-    })
-    .catch((err) => {
-      return err;
-    });
+  return apiInstance.get(`/articles/${article_id}`).then(({ data }) => {
+    return data.article;
+  });
 };
 
 export const getCommentsByArticleId = (article_id) => {
@@ -35,21 +27,13 @@ export const getCommentsByArticleId = (article_id) => {
     .get(`/articles/${article_id}/comments`)
     .then(({ data }) => {
       return data.comments;
-    })
-    .catch((err) => {
-      return err;
     });
 };
 
 export const voteArticleById = (article_id, body) => {
-  return apiInstance
-    .patch(`/articles/${article_id}`, body)
-    .then(({ data }) => {
-      return data;
-    })
-    .catch((err) => {
-      return err;
-    });
+  return apiInstance.patch(`/articles/${article_id}`, body).then(({ data }) => {
+    return data;
+  });
 };
 
 export const postNewComment = (article_id, body) => {
@@ -57,8 +41,9 @@ export const postNewComment = (article_id, body) => {
     .post(`/articles/${article_id}/comments`, body)
     .then(({ data }) => {
       return data.comment;
-    })
-    .catch((err) => {
-      return err;
     });
+};
+
+export const deleteCommentById = (comment_id) => {
+  return apiInstance.delete(`/comments/${comment_id}`);
 };
