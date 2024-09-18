@@ -4,11 +4,12 @@ const apiInstance = axios.create({
   baseURL: "https://news-api-4de7.onrender.com/api",
 });
 
-export const getArticles = (sort_by) => {
+export const getArticles = (sort_by, topic) => {
   return apiInstance
     .get("/articles", {
       params: {
         sort_by: sort_by,
+        topic: topic,
       },
     })
     .then(({ data }) => {
@@ -46,4 +47,10 @@ export const postNewComment = (article_id, body) => {
 
 export const deleteCommentById = (comment_id) => {
   return apiInstance.delete(`/comments/${comment_id}`);
+};
+
+export const getTopics = () => {
+  return apiInstance.get("/topics").then(({ data }) => {
+    return data.topics;
+  });
 };

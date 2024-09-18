@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getArticles } from "../api";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PiEyesFill } from "react-icons/pi";
 import { SlLike } from "react-icons/sl";
 
@@ -8,9 +8,10 @@ export const ArticlesList = () => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const { topic } = useParams();
 
   useEffect(() => {
-    getArticles()
+    getArticles(undefined, topic)
       .then((response) => {
         setArticles(response);
         setIsLoading(false);
@@ -19,7 +20,7 @@ export const ArticlesList = () => {
         setIsLoading(false);
         setIsError(true);
       });
-  }, []);
+  }, [topic]);
 
   if (isLoading) {
     return <p>Loading....</p>;
