@@ -9,6 +9,7 @@ export const RoutesList = () => {
       <Route path="/" element={<Home />} />
       <Route path="/articles" element={<ArticlesList />} />
       <Route path="/articles/:article_id" element={<ArticlePage />} />
+      <Route path="articles/topics/:topic" element={<ArticlesList />} />
     </Routes>
   );
 };
