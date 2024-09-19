@@ -4,6 +4,7 @@ import { PopularArticles } from "../components/PopularArticles";
 import { getArticles } from "../api";
 import { LatestArticles } from "../components/LatestArticles";
 import { Link } from "react-router-dom";
+import { Loading } from "../components/Loading";
 
 export const Home = () => {
   const [articles, setArticles] = useState([]);
@@ -24,10 +25,15 @@ export const Home = () => {
 
   if (isLoading) {
     return (
-      <p>
-        Opps... we use free Backend hosting and loading takes some time. Please
-        do not leave!
-      </p>
+      <div className="w-full mx-auto my-20">
+        <p className="text-center text-sm text-emerald-700 font-bold md:text-xl xl:text-4xl">
+          Opps... <br />
+          We use free Backend hosting and loading takes some time.
+          <br />
+          Please do not leave!
+        </p>
+        <Loading />
+      </div>
     );
   }
 

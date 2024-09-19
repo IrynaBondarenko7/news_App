@@ -63,7 +63,6 @@ export const SelectSortQueries = ({
           options={sortOptions}
           onChange={handleChange}
           isClearable={true}
-          defaultValue={sortBy}
         />
       </div>
       <div className="md:w-[200px]">
