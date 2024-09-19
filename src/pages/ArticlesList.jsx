@@ -9,7 +9,8 @@ import {
 } from "react-router-dom";
 import { PiEyesFill } from "react-icons/pi";
 import { SlLike } from "react-icons/sl";
-import Select from "react-select";
+import { SelectSortQueries } from "../components/SelectSortQueries";
+// import Select from "react-select";
 
 export const ArticlesList = () => {
   const [articles, setArticles] = useState([]);
@@ -25,17 +26,6 @@ export const ArticlesList = () => {
   const sortSearch = searchParams.get("sort_by");
   const orderSearch = searchParams.get("order");
 
-  const sortOptions = [
-    { value: "created_at", label: "date" },
-    { value: "comment_count", label: "comments count" },
-    { value: "votes", label: "votes" },
-  ];
-
-  const orderOptions = [
-    { value: "asc", label: "ascending order" },
-    { value: "desc", label: "descending order" },
-  ];
-
   useEffect(() => {
     getArticles(sortSearch || sortBy, topic, orderSearch || order)
       .then((response) => {
@@ -48,40 +38,6 @@ export const ArticlesList = () => {
       });
   }, [topic, sortBy, order, sortSearch, orderSearch]);
 
-  const handleChange = (option) => {
-    if (!option) {
-      navigate("/articles");
-      setSortBy(undefined);
-      orderSearch
-        ? setSearchParams({ order: orderSearch })
-        : setSearchParams({});
-    } else {
-      setSortBy(option.value);
-      orderSearch
-        ? setSearchParams({ sort_by: option.value, order: orderSearch })
-        : setSearchParams({ sort_by: option.value });
-    }
-  };
-
-  const handleOrderChange = (option) => {
-    if (!option) {
-      if (location.pathname.includes("topics")) {
-        navigate(location);
-      } else {
-        navigate("/articles");
-      }
-      setOrder(undefined);
-      sortSearch
-        ? setSearchParams({ sort_by: sortSearch })
-        : setSearchParams({});
-    } else {
-      setOrder(option.value);
-      sortSearch
-        ? setSearchParams({ sort_by: sortSearch, order: option.value })
-        : setSearchParams({ order: option.value });
-    }
-  };
-
   if (isLoading) {
     return <p>Loading....</p>;
   }
@@ -92,7 +48,16 @@ export const ArticlesList = () => {
 
   return (
     <>
-      <div>
+      <SelectSortQueries
+        navigate={navigate}
+        setSortBy={setSortBy}
+        setOrder={setOrder}
+        orderSearch={orderSearch}
+        sortSearch={sortSearch}
+        setSearchParams={setSearchParams}
+        location={location}
+      />
+      {/* <div>
         <p> Sort articles by</p>
         <Select
           name="sort"
@@ -107,7 +72,7 @@ export const ArticlesList = () => {
           onChange={handleOrderChange}
           isClearable={true}
         />
-      </div>
+      </div> */}
       <ul className="flex flex-col gap-6 justify-center items-center">
         {articles.map((article) => {
           const url = `/articles/${article.article_id}`;
