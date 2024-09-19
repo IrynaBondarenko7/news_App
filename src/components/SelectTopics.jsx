@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getTopics } from "../api";
 
 export const SelectTopics = () => {
   const [topics, setTopics] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     getTopics().then((response) => {
@@ -16,11 +18,14 @@ export const SelectTopics = () => {
     value: topic.slug,
     label: topic.slug,
   }));
-  const navigate = useNavigate();
 
   const handleChange = (option) => {
     if (!option) {
-      navigate("/articles");
+      if (location.pathname === "/") {
+        navigate("/");
+      } else {
+        navigate("/articles");
+      }
     } else if (option.value === "all topics") {
       navigate("/articles");
     } else {
