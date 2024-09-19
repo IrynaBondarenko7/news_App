@@ -11,13 +11,14 @@ import { SlLike } from "react-icons/sl";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { Comments } from "../components/Comments";
+import { Loading } from "../components/Loading";
+import { Error } from "../components/Error";
 
 export const ArticlePage = () => {
   const { article_id } = useParams();
   const [article, setArticle] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [isCommentsVisible, setIsCommentsVisible] = useState(false);
   const [votes, setVotes] = useState(0);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -30,6 +31,9 @@ export const ArticlePage = () => {
     watch,
     formState: { errors },
   } = useForm({ mode: "onChange" });
+
+  const date = new Date(article.created_at).toLocaleDateString();
+  const time = new Date(article.created_at).toLocaleTimeString();
 
   useEffect(() => {
     getArticleById(article_id)
@@ -64,10 +68,6 @@ export const ArticlePage = () => {
       });
   }, [article_id, navigate]);
 
-  const showComments = () => {
-    setIsCommentsVisible(!isCommentsVisible);
-  };
-
   const onLikeArticleBtnClick = (id) => {
     const body = { inc_votes: 1 };
     voteArticleById(id, body)
@@ -94,11 +94,11 @@ export const ArticlePage = () => {
       .then((response) => {
         setComments((prevComments) => {
           const commentsArr = [...prevComments];
-          commentsArr.push(response);
+          commentsArr.unshift(response);
           const sortedComments = commentsArr.toSorted(
             (a, b) => new Date(a.created_at) - new Date(b.created_at)
           );
-          return sortedComments;
+          return commentsArr;
         });
         toast.success("comment added!");
       })
@@ -128,11 +128,18 @@ export const ArticlePage = () => {
   };
 
   if (isLoading) {
-    return <p>Loading....</p>;
+    return (
+      <div className="w-full mx-auto my-20">
+        <p className="text-center text-sm text-emerald-700 font-bold md:text-xl xl:text-4xl">
+          Loading...
+        </p>
+        <Loading />
+      </div>
+    );
   }
 
   if (isError) {
-    return <p>Something went wrong</p>;
+    return <Error />;
   }
 
   return (
@@ -145,12 +152,15 @@ export const ArticlePage = () => {
         />
         <div className="flex flex-col justify-between">
           <div>
-            <h1 className="text-center mb-4">{article.title}</h1>
+            <h1 className="text-center mb-4 font-bold">{article.title}</h1>
             <p>Topic: {article.topic}</p>
             <p>Posted by: {article.author}</p>
+            <p>
+              {date} {time}
+            </p>
           </div>
           <div className="flex gap-6 items-center mt-5">
-            <p>Votes {votes}</p>
+            <p className="mt-1">Votes {votes}</p>
             <button
               type="button"
               aria-label="like"
@@ -158,51 +168,46 @@ export const ArticlePage = () => {
                 onLikeArticleBtnClick(article.article_id);
               }}
             >
-              <SlLike size={24} />
+              <SlLike
+                size={24}
+                fill="#508C9B"
+                className="hover:scale-110 focus:scale-110 transition-all"
+              />
             </button>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between my-4">
         <p>
           Comments <span>{article.comment_count}</span>
         </p>
-        {article.comment_count > 0 && (
-          <button
-            type="button"
-            onClick={showComments}
-            className="text-blue-600"
-          >
-            {!isCommentsVisible && "Show all comments"}
-            {isCommentsVisible && "Hide comments"}
-          </button>
-        )}
       </div>
-      {isCommentsVisible && (
-        <Comments
-          comments={comments}
-          isLoading={isCommentsLoading}
-          isError={isCommentsError}
-          deleteComment={onDeleteCommentBtnClick}
-        />
-      )}
-      <p className="mt-5">Leave comment</p>
+      <Comments
+        comments={comments}
+        isLoading={isCommentsLoading}
+        isError={isCommentsError}
+        deleteComment={onDeleteCommentBtnClick}
+      />
+
+      <p className="mt-5 text-[#508C9B] font-bold">Leave comment</p>
       <form onSubmit={handleSubmit(onSubmit)} className=" w-full">
-        <p>User name: jessjelly</p>
+        <p className="mb-2">User name: jessjelly</p>
         <textarea
           {...register("text", { required: true, maxLength: 200 })}
           value={newComment}
-          className="border-2 border-black w-full"
+          className="border-2 border-[#508C9B] w-full"
         />
         {errors?.text?.type === "required" && <p>This field is required</p>}
         {errors?.text?.type === "maxLength" && (
           <p>You have exceeded the maximum number of characters</p>
         )}
 
-        <button type="submit">Submit</button>
+        <button type="submit" className="button mx-auto block">
+          Submit
+        </button>
       </form>
-      <Toaster position="bottom-center" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
     </section>
   );
 };

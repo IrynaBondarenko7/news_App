@@ -5,6 +5,7 @@ import { getArticles } from "../api";
 import { LatestArticles } from "../components/LatestArticles";
 import { Link } from "react-router-dom";
 import { Loading } from "../components/Loading";
+import { Error } from "../components/Error";
 
 export const Home = () => {
   const [articles, setArticles] = useState([]);
@@ -38,7 +39,7 @@ export const Home = () => {
   }
 
   if (isError) {
-    return <p>Something went wrong</p>;
+    return <Error />;
   }
 
   return (
@@ -48,7 +49,10 @@ export const Home = () => {
         <PopularArticles articles={articles} />
       </div>
       <LatestArticles />
-      <Link to="/articles" className="text-blue-700 text-center mt-6 block">
+      <Link
+        to="/articles"
+        className="text-blue-700 text-center mt-6 block button"
+      >
         View all articles
       </Link>
     </>

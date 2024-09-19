@@ -28,7 +28,7 @@ export const LatestArticles = () => {
   }
 
   return (
-    <section>
+    <section className="my-3">
       <h2 className="text-lg border-b-2 border-blue-900 w-[85px] mb-5">
         The Latest
       </h2>
