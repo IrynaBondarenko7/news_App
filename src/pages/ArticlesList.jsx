@@ -35,8 +35,13 @@ export const ArticlesList = () => {
       .catch((err) => {
         setIsLoading(false);
         setIsError(true);
+        if (err.status === 404) {
+          navigate("/articles/notfound");
+        } else if (err.status === 400) {
+          navigate("/articles/badrequest");
+        }
       });
-  }, [topic, sortBy, order, sortSearch, orderSearch]);
+  }, [topic, sortBy, order, sortSearch, orderSearch, navigate]);
 
   if (isLoading) {
     return <p>Loading....</p>;
@@ -57,22 +62,6 @@ export const ArticlesList = () => {
         setSearchParams={setSearchParams}
         location={location}
       />
-      {/* <div>
-        <p> Sort articles by</p>
-        <Select
-          name="sort"
-          options={sortOptions}
-          onChange={handleChange}
-          isClearable={true}
-        />
-        <p> Sort articles in</p>
-        <Select
-          name="order"
-          options={orderOptions}
-          onChange={handleOrderChange}
-          isClearable={true}
-        />
-      </div> */}
       <ul className="flex flex-col gap-6 justify-center items-center">
         {articles.map((article) => {
           const url = `/articles/${article.article_id}`;

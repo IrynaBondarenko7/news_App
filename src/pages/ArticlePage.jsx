@@ -6,7 +6,7 @@ import {
   postNewComment,
   voteArticleById,
 } from "../api";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { SlLike } from "react-icons/sl";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -23,6 +23,7 @@ export const ArticlePage = () => {
   const [comments, setComments] = useState([]);
   const [isCommentsLoading, setIsCommentsLoading] = useState(true);
   const [isCommentsError, setIsCommentsError] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -55,8 +56,13 @@ export const ArticlePage = () => {
       .catch((err) => {
         setIsCommentsError(true);
         setIsCommentsLoading(false);
+        if (err.status === 404) {
+          navigate("/articles/notfound");
+        } else if (err.status === 400) {
+          navigate("/articles/badrequest");
+        }
       });
-  }, [article_id]);
+  }, [article_id, navigate]);
 
   const showComments = () => {
     setIsCommentsVisible(!isCommentsVisible);
