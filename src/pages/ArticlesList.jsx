@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { getArticles } from "../api";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useParams,
+  useNavigate,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
 import { PiEyesFill } from "react-icons/pi";
 import { SlLike } from "react-icons/sl";
 import Select from "react-select";
@@ -10,8 +16,14 @@ export const ArticlesList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [sortBy, setSortBy] = useState();
+  const [order, setOrder] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { topic } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const sortSearch = searchParams.get("sort_by");
+  const orderSearch = searchParams.get("order");
 
   const sortOptions = [
     { value: "created_at", label: "date" },
@@ -19,8 +31,13 @@ export const ArticlesList = () => {
     { value: "votes", label: "votes" },
   ];
 
+  const orderOptions = [
+    { value: "asc", label: "ascending order" },
+    { value: "desc", label: "descending order" },
+  ];
+
   useEffect(() => {
-    getArticles(sortBy, topic)
+    getArticles(sortSearch || sortBy, topic, orderSearch || order)
       .then((response) => {
         setArticles(response);
         setIsLoading(false);
@@ -29,14 +46,39 @@ export const ArticlesList = () => {
         setIsLoading(false);
         setIsError(true);
       });
-  }, [topic, sortBy]);
+  }, [topic, sortBy, order, sortSearch, orderSearch]);
 
   const handleChange = (option) => {
     if (!option) {
       navigate("/articles");
       setSortBy(undefined);
+      orderSearch
+        ? setSearchParams({ order: orderSearch })
+        : setSearchParams({});
     } else {
       setSortBy(option.value);
+      orderSearch
+        ? setSearchParams({ sort_by: option.value, order: orderSearch })
+        : setSearchParams({ sort_by: option.value });
+    }
+  };
+
+  const handleOrderChange = (option) => {
+    if (!option) {
+      if (location.pathname.includes("topics")) {
+        navigate(location);
+      } else {
+        navigate("/articles");
+      }
+      setOrder(undefined);
+      sortSearch
+        ? setSearchParams({ sort_by: sortSearch })
+        : setSearchParams({});
+    } else {
+      setOrder(option.value);
+      sortSearch
+        ? setSearchParams({ sort_by: sortSearch, order: option.value })
+        : setSearchParams({ order: option.value });
     }
   };
 
@@ -56,6 +98,13 @@ export const ArticlesList = () => {
           name="sort"
           options={sortOptions}
           onChange={handleChange}
+          isClearable={true}
+        />
+        <p> Sort articles in</p>
+        <Select
+          name="order"
+          options={orderOptions}
+          onChange={handleOrderChange}
           isClearable={true}
         />
       </div>
