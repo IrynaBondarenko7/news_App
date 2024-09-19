@@ -10,8 +10,28 @@
 
 main {
   flex-grow: 1;
+  margin-top: 84px;
+  margin-bottom: 30px;
+}
+textarea {
+  resize: none;
 }
 
 .footer {
   align-self: flex-end;
+}
+
+.css-13cymwt-control {
+  border: 1px solid #508c9b !important;
+}
+
+.button {
+  @apply bg-[#201E43] text-white w-full md:w-[300px] mx-auto py-2 rounded-lg hover:scale-110 focus:scale-110 transition-all;
+}
+
+.swiper-scrollbar-drag {
+  background-color: #508c9b;
+}
+.swiper-scrollbar-vertical {
+  background-color: #c5d2d5;
 }

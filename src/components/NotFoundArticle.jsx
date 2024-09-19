@@ -4,7 +4,7 @@ export const NotFoundArticle = () => {
   return (
     <div className="flex justify-center items-center my-20">
       <img
-        src="../../public/photo_5431614177841112514_m.jpg"
+        src="/article_not_found.jpg"
         alt="cat"
         width="50%"
       />

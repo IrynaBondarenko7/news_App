@@ -10,7 +10,9 @@ import {
 import { PiEyesFill } from "react-icons/pi";
 import { SlLike } from "react-icons/sl";
 import { SelectSortQueries } from "../components/SelectSortQueries";
-// import Select from "react-select";
+import { Loading } from "../components/Loading";
+import { Error } from "../components/Error";
+import { FaRegComments } from "react-icons/fa";
 
 export const ArticlesList = () => {
   const [articles, setArticles] = useState([]);
@@ -44,11 +46,18 @@ export const ArticlesList = () => {
   }, [topic, sortBy, order, sortSearch, orderSearch, navigate]);
 
   if (isLoading) {
-    return <p>Loading....</p>;
+    return (
+      <div className="w-full mx-auto my-20">
+        <p className="text-center text-sm text-emerald-700 font-bold md:text-xl xl:text-4xl">
+          Loading...
+        </p>
+        <Loading />
+      </div>
+    );
   }
 
   if (isError) {
-    return <p>Something went wrong</p>;
+    return <Error />;
   }
 
   return (
@@ -71,10 +80,12 @@ export const ArticlesList = () => {
           return (
             <li
               key={article.article_id}
-              className="flex gap-6 flex-col justify-center items-center w-full xl:w-[500px] bg-indigo-100 rounded-lg p-5"
+              className="flex gap-6 flex-col justify-center items-center w-full xl:w-[500px] rounded-lg p-5 border-2 border-[#508C9B]"
             >
               <Link to={url}>
-                <h2 className="text-sm mt-2.5 underline">{article.title}</h2>
+                <h2 className="text-sm mt-2.5 underline text-[#134B70] font-bold md:text-lg hover:text-[#508C9B] focus:text-[#508C9B] transition-all">
+                  {article.title}
+                </h2>
               </Link>
               <img
                 src={article.article_img_url}
@@ -96,15 +107,22 @@ export const ArticlesList = () => {
                     <p className="absolute top-[62%] left-1/2 -translate-y-1/2 -translate-x-1/2">
                       {article.votes}
                     </p>
-                    <SlLike size={40} />
+                    <SlLike size={40} fill="#508C9B" />
                   </div>
                 </Link>
-
-                <p>Comments {article.comment_count}</p>
+                <div className="flex items-center gap-2">
+                  <p>Comments </p>
+                  <div className="relative">
+                    <p className="absolute top-[42%] left-[37%] -translate-y-1/2 -translate-x-1/2">
+                      {article.comment_count}
+                    </p>
+                    <FaRegComments size={50} fill="#508C9B" />
+                  </div>
+                </div>
               </div>
               <Link
                 to={url}
-                className="flex gap-3 items-center bg-white text-black px-3 py-2 rounded-lg"
+                className="flex gap-3 items-center justify-center bg-white text-black px-3 py-2 rounded-lg button"
               >
                 <PiEyesFill size={24} />
                 <p>View comments</p>

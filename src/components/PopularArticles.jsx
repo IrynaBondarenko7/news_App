@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import { Autoplay } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
 
 export const PopularArticles = ({ articles }) => {
-  const popularArticles = articles
-    .filter((article) => article.votes > 3)
-    .slice(1, 4);
+  const popularArticles = articles.filter((article) => article.votes > 3);
 
-  const defaultArticles = articles.slice(1, 4);
+  const defaultArticles = articles.slice(1, 10);
 
   return (
     <section className="hidden md:block">
@@ -13,35 +17,65 @@ export const PopularArticles = ({ articles }) => {
         Most Popular
       </h2>
       {popularArticles.length > 0 && (
-        <ul>
+        <Swiper
+          direction={"vertical"}
+          loop={true}
+          className="mySwiper h-[400px]"
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          modules={[Autoplay]}
+          slidesPerView={2}
+          spaceBetween={30}
+        >
           {popularArticles.map((article) => {
             const url = `/articles/${article.article_id}`;
             return (
-              <Link to={url} key={article.article_id}>
-                <li className="w-44">
-                  <img src={article.article_img_url} alt="article image" />
-                  <h2 className="text-sm mt-2.5">{article.title}</h2>
-                  <p>Votes: {article.votes}</p>
-                </li>
-              </Link>
+              <SwiperSlide key={article.article_id} className="h-[180px]">
+                <Link to={url}>
+                  <li className="w-44">
+                    <img src={article.article_img_url} alt="article image" />
+                    <h2 className="text-sm mt-2.5 font-bold">
+                      {article.title}
+                    </h2>
+                    <p className="text-sm">Votes: {article.votes}</p>
+                  </li>
+                </Link>
+              </SwiperSlide>
             );
           })}
-        </ul>
+        </Swiper>
       )}
       {popularArticles.length === 0 && (
-        <ul>
+        <Swiper
+          direction={"vertical"}
+          loop={true}
+          className="mySwiper"
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          modules={[Autoplay]}
+          slidesPerView={2}
+          spaceBetween={30}
+        >
           {defaultArticles.map((article) => {
             const url = `/articles/${article.article_id}`;
             return (
-              <Link to={url} key={article.article_id}>
-                <li className="w-44">
-                  <img src={article.article_img_url} alt="article image" />
-                  <h2 className="text-sm mt-2.5">{article.title}</h2>
-                </li>
-              </Link>
+              <SwiperSlide key={article.article_id} className="h-[180px]">
+                <Link to={url}>
+                  <li className="w-44">
+                    <img src={article.article_img_url} alt="article image" />
+                    <h2 className="text-sm mt-2.5 font-bold">
+                      {article.title}
+                    </h2>
+                  </li>
+                </Link>
+              </SwiperSlide>
             );
           })}
-        </ul>
+        </Swiper>
       )}
     </section>
   );
