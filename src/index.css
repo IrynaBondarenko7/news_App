@@ -39,10 +39,3 @@ textarea {
 .swiper-slide {
   margin-bottom: 30px !important;
 }
-
-.scroll-to-top {
-  @apply hidden;
-}
-.scroll-to-top.show {
-  @apply block;
-}

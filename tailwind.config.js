@@ -10,8 +10,8 @@ const config = {
       container: {
         center: true,
         padding: {
-          DEFAULT: "12px",
-          sm: "15px",
+          DEFAULT: "40px",
+          sm: "40px",
           md: "25px",
           xl: "30px",
         },
