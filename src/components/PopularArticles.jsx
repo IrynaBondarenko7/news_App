@@ -27,20 +27,16 @@ export const PopularArticles = ({ articles }) => {
           }}
           modules={[Autoplay]}
           slidesPerView={2}
-          spaceBetween={30}
+          spaceBetween={10}
         >
           {popularArticles.map((article) => {
             const url = `/articles/${article.article_id}`;
             return (
-              <SwiperSlide key={article.article_id} className="h-[180px]">
+              <SwiperSlide key={article.article_id} className="h-auto w-48">
                 <Link to={url}>
-                  <li className="w-44">
-                    <img src={article.article_img_url} alt="article image" />
-                    <h2 className="text-sm mt-2.5 font-bold">
-                      {article.title}
-                    </h2>
-                    <p className="text-sm">Votes: {article.votes}</p>
-                  </li>
+                  <img src={article.article_img_url} alt="article image" />
+                  <h2 className="text-sm mt-2.5 font-bold">{article.title}</h2>
+                  <p className="text-sm">Votes: {article.votes}</p>
                 </Link>
               </SwiperSlide>
             );
