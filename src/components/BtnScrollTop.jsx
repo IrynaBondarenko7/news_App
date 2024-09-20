@@ -1,21 +1,25 @@
+import { useEffect, useState } from "react";
 import { Link as ScrollLink } from "react-scroll";
 import { FaArrowCircleUp } from "react-icons/fa";
 
 export const BtnScrollTop = () => {
-  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  const [isVisible, setIsVisible] = useState(false);
 
-  if (scrollToTopBtn) {
-    window.onscroll = function () {
-      if (
-        document.body.scrollTop > 300 ||
-        document.documentElement.scrollTop > 300
-      ) {
-        scrollToTopBtn.style.display = "block";
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setIsVisible(true);
       } else {
-        scrollToTopBtn.style.display = "none";
+        setIsVisible(false);
       }
     };
-  }
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <ScrollLink
       to="main"
@@ -23,7 +27,9 @@ export const BtnScrollTop = () => {
       href="/articles"
       spy={true}
       duration={500}
-      className="fixed bottom-14 right-2 md:right-20 z-10"
+      className={`fixed bottom-14 right-2 md:right-20 z-10 transition-opacity duration-300 ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
       id="scrollToTopBtn"
       offset={-100}
     >
