@@ -28,7 +28,7 @@ export const Home = () => {
     return (
       <div className="w-full mx-auto my-20">
         <p className="text-center text-sm text-emerald-700 font-bold md:text-xl xl:text-4xl">
-          Opps... <br />
+          Oops... <br />
           We use free Backend hosting and loading takes some time.
           <br />
           Please do not leave!
