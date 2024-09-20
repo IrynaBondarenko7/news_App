@@ -13,6 +13,7 @@ import { SelectSortQueries } from "../components/SelectSortQueries";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
 import { FaRegComments } from "react-icons/fa";
+import { BtnScrollTop } from "../components/BtnScrollTop";
 
 export const ArticlesList = () => {
   const [articles, setArticles] = useState([]);
@@ -48,7 +49,7 @@ export const ArticlesList = () => {
   if (isLoading) {
     return (
       <div className="w-full mx-auto my-20">
-        <p className="text-center text-sm text-emerald-700 font-bold md:text-xl xl:text-4xl">
+        <p className="text-center text-sm text-[#134B70] font-bold md:text-xl xl:text-4xl">
           Loading...
         </p>
         <Loading />
@@ -80,7 +81,7 @@ export const ArticlesList = () => {
           return (
             <li
               key={article.article_id}
-              className="flex gap-6 flex-col justify-center items-center w-full xl:w-[500px] rounded-lg p-5 border-2 border-[#508C9B]"
+              className="flex gap-8 flex-col justify-center items-center w-full xl:w-[700px] rounded-lg p-5 pb-6 border-2 shadow-2xl"
             >
               <Link to={url}>
                 <h2 className="text-sm mt-2.5 underline text-[#134B70] font-bold md:text-lg hover:text-[#508C9B] focus:text-[#508C9B] transition-all">
@@ -100,7 +101,7 @@ export const ArticlesList = () => {
                   {date} {time}
                 </p>
               </div>
-              <div className="flex w-full xl:w-[500px] justify-between">
+              <div className="flex w-full justify-between">
                 <Link to={url} className="flex items-center gap-2">
                   <p className="mt-2">Votes</p>
                   <div className="relative">
@@ -131,6 +132,7 @@ export const ArticlesList = () => {
           );
         })}
       </ul>
+      <BtnScrollTop />
     </>
   );
 };

@@ -26,8 +26,8 @@ export const Home = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full mx-auto my-20">
-        <p className="text-center text-sm text-emerald-700 font-bold md:text-xl xl:text-4xl">
+      <div className="w-full mx-auto">
+        <p className="text-center text-sm text-[#134B70] font-bold md:text-xl xl:text-4xl">
           Oops... <br />
           We use free Backend hosting and loading takes some time.
           <br />
@@ -51,7 +51,7 @@ export const Home = () => {
       <LatestArticles />
       <Link
         to="/articles"
-        className="text-blue-700 text-center mt-6 block button"
+        className="text-blue-700 text-center mt-6 block button cursor-pointer"
       >
         View all articles
       </Link>

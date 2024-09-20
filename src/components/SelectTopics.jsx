@@ -35,7 +35,7 @@ export const SelectTopics = () => {
 
   return (
     <Select
-      className="w-[200px]"
+      className="w-[200px]  ml-[32%]"
       isClearable={true}
       name="topic"
       options={topicsOptions}

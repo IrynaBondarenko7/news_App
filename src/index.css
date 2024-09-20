@@ -35,3 +35,14 @@ textarea {
 .swiper-scrollbar-vertical {
   background-color: #c5d2d5;
 }
+
+.swiper-slide {
+  margin-bottom: 30px !important;
+}
+
+.scroll-to-top {
+  @apply hidden;
+}
+.scroll-to-top.show {
+  @apply block;
+}

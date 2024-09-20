@@ -6,7 +6,8 @@ import {
   postNewComment,
   voteArticleById,
 } from "../api";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -130,7 +131,7 @@ export const ArticlePage = () => {
   if (isLoading) {
     return (
       <div className="w-full mx-auto my-20">
-        <p className="text-center text-sm text-emerald-700 font-bold md:text-xl xl:text-4xl">
+        <p className="text-center text-sm text-[#134B70] font-bold md:text-xl xl:text-4xl">
           Loading...
         </p>
         <Loading />
@@ -144,6 +145,13 @@ export const ArticlePage = () => {
 
   return (
     <section>
+      <Link
+        to="/articles"
+        className="left-5 flex gap-2 items-center mb-4 text-[#134B70] hover:text-[#508C9B] focus:text-[#508C9B] transition-all"
+      >
+        <FaLongArrowAltLeft />
+        <p>Back to all articles</p>
+      </Link>
       <div className="flex gap-6 flex-col md:flex-row">
         <img
           src={article.article_img_url}
@@ -151,11 +159,11 @@ export const ArticlePage = () => {
           className="f-full md:w-[400px]"
         />
         <div className="flex flex-col justify-between">
-          <div>
+          <div className="flex flex-col gap-2">
             <h1 className="text-center mb-4 font-bold">{article.title}</h1>
             <p>Topic: {article.topic}</p>
             <p>Posted by: {article.author}</p>
-            <p>
+            <p className="text-slate-500">
               {date} {time}
             </p>
           </div>
@@ -191,12 +199,12 @@ export const ArticlePage = () => {
       />
 
       <p className="mt-5 text-[#508C9B] font-bold">Leave comment</p>
-      <form onSubmit={handleSubmit(onSubmit)} className=" w-full">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <p className="mb-2">User name: jessjelly</p>
         <textarea
           {...register("text", { required: true, maxLength: 200 })}
           value={newComment}
-          className="border-2 border-[#508C9B] w-full"
+          className="border-2 border-[#508C9B] w-full mb-4"
         />
         {errors?.text?.type === "required" && <p>This field is required</p>}
         {errors?.text?.type === "maxLength" && (

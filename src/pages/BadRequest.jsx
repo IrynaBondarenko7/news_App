@@ -4,12 +4,9 @@ import { Link } from "react-router-dom";
 export const BadRequest = () => {
   return (
     <div className="mx-auto w-full md:w-[500px] my-20">
-      <h2 className="text-5xl text-center">Bad Request</h2>
+      <h2 className="text-5xl text-center text-[#134B70]">Bad Request</h2>
       <DotLottieReact src="/bad_request.json" loop autoplay />
-      <Link
-        to="/articles"
-        className="mt-6 block py-3 px-4 bg-sky-700 text-white rounded-lg w-[200px] text-center mx-auto"
-      >
+      <Link to="/articles" className="mt-6 block w-[300px] button text-center ">
         Try again
       </Link>
     </div>
