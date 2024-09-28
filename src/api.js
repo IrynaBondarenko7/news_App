@@ -55,3 +55,9 @@ export const getTopics = () => {
     return data.topics;
   });
 };
+
+export const getUsers = () => {
+  return apiInstance.get("/users").then(({ data }) => {
+    return data.users;
+  });
+};

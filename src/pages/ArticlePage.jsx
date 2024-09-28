@@ -96,9 +96,6 @@ export const ArticlePage = () => {
         setComments((prevComments) => {
           const commentsArr = [...prevComments];
           commentsArr.unshift(response);
-          const sortedComments = commentsArr.toSorted(
-            (a, b) => new Date(a.created_at) - new Date(b.created_at)
-          );
           return commentsArr;
         });
         toast.success("comment added!");
@@ -199,16 +196,24 @@ export const ArticlePage = () => {
       />
 
       <p className="mt-5 text-[#508C9B] font-bold">Leave comment</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <p className="mb-2">User name: jessjelly</p>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
+        <p className="my-2">
+          <span className="font-bold">UserName:</span> jessjelly
+        </p>
         <textarea
           {...register("text", { required: true, maxLength: 200 })}
           value={newComment}
-          className="border-2 border-[#508C9B] w-full mb-4"
+          className="border-2 border-[#508C9B] w-full mb-6"
         />
-        {errors?.text?.type === "required" && <p>This field is required</p>}
+        {errors?.text?.type === "required" && (
+          <p className="absolute text-red-700 bottom-11">
+            This field is required
+          </p>
+        )}
         {errors?.text?.type === "maxLength" && (
-          <p>You have exceeded the maximum number of characters</p>
+          <p className="absolute text-red-700 bottom-11">
+            You have exceeded the maximum number of characters
+          </p>
         )}
 
         <button type="submit" className="button mx-auto block">

@@ -53,14 +53,16 @@ export const Comments = ({ comments, isLoading, isError, deleteComment }) => {
                 <p>{comment.body}</p>
                 <div className="flex justify-between">
                   <p>votes: {comment.votes}</p>
-                  <button
-                    onClick={() => {
-                      deleteComment(comment.comment_id);
-                    }}
-                    aria-label="delete comment"
-                  >
-                    <MdDeleteForever size={24} />
-                  </button>
+                  {comment.author === "jessjelly" && (
+                    <button
+                      onClick={() => {
+                        deleteComment(comment.comment_id);
+                      }}
+                      aria-label="delete comment"
+                    >
+                      <MdDeleteForever size={24} />
+                    </button>
+                  )}
                 </div>
               </SwiperSlide>
             );
