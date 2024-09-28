@@ -7,6 +7,7 @@ import { NotFoundPage } from "../pages/NotFoundPage";
 import { BadRequest } from "../pages/BadRequest";
 import { SignInPage } from "../pages/SingInPage";
 import { SignUpPage } from "../pages/SignUpPage";
+import { UserPage } from "../pages/UserPage";
 
 export const RoutesList = () => {
   return (
@@ -14,6 +15,7 @@ export const RoutesList = () => {
       <Route path="/" element={<Home />} />
       <Route path="/signin" element={<SignInPage />} />
       <Route path="/signup" element={<SignUpPage />} />
+      <Route path="/users/:username" element={<UserPage />} />
       <Route path="/articles" element={<ArticlesList />} />
       <Route path="/articles/:article_id" element={<ArticlePage />} />
       <Route path="articles/topics/:topic" element={<ArticlesList />} />
