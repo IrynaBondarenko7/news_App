@@ -22,7 +22,7 @@ const schema = yup
 
 export const SignInPage = () => {
   const [inputUser, setInputUser] = useState({ username: "" });
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const {
     register,
@@ -43,6 +43,7 @@ export const SignInPage = () => {
           });
           toast.success(`Hello ${response.username}`);
           localStorage.setItem("username", response.username);
+          setUser(response.username);
           setTimeout(() => {
             navigate(`/users/${response.username}`);
           }, 1000);
