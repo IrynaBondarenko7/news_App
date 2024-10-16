@@ -108,7 +108,7 @@ export const SignUpPage = () => {
         </label>
 
         <button type="submit" className="button mx-auto block">
-          Submit
+          Sign up
         </button>
       </form>
     </section>
