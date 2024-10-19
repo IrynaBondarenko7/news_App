@@ -23,7 +23,7 @@ export const UserPage = () => {
   };
 
   return (
-    <section className="flex text-[#201E43] mt-10 mx-auto justify-center items-center gap-20">
+    <section className="flex flex-col md:flex-row text-[#201E43] mt-10 mx-auto justify-center items-center gap-20">
       <div>
         <img
           src={userInfo.avatar_url}

@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { UserContext } from "../components/UserContext";
 
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -9,8 +11,9 @@ import "swiper/css/scrollbar";
 import { FreeMode, Scrollbar, Mousewheel } from "swiper/modules";
 
 export const Comments = ({ comments, isLoading, isError, deleteComment }) => {
+  const { user } = useContext(UserContext);
   if (isLoading) {
-    return <p>LOADINGGGGGGGGGGGGGGGGGG....</p>;
+    return <p>Loading....</p>;
   }
 
   if (isError) {
@@ -53,7 +56,7 @@ export const Comments = ({ comments, isLoading, isError, deleteComment }) => {
                 <p>{comment.body}</p>
                 <div className="flex justify-between">
                   <p>votes: {comment.votes}</p>
-                  {comment.author === "jessjelly" && (
+                  {comment.author === user && (
                     <button
                       onClick={() => {
                         deleteComment(comment.comment_id);
