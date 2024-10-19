@@ -55,3 +55,15 @@ export const getTopics = () => {
     return data.topics;
   });
 };
+
+export const getUser = (username) => {
+  return apiInstance.get(`/users/${username}`).then(({ data }) => {
+    return data.user;
+  });
+};
+
+export const postUser = (body) => {
+  return apiInstance.post("/users", body).then(({ data }) => {
+    return data.user;
+  });
+};

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   deleteCommentById,
   getArticleById,
@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { Comments } from "../components/Comments";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
+import { UserContext } from "../components/UserContext";
 
 export const ArticlePage = () => {
   const { article_id } = useParams();
@@ -25,7 +26,9 @@ export const ArticlePage = () => {
   const [comments, setComments] = useState([]);
   const [isCommentsLoading, setIsCommentsLoading] = useState(true);
   const [isCommentsError, setIsCommentsError] = useState(false);
+
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
   const {
     register,
     handleSubmit,
@@ -50,12 +53,16 @@ export const ArticlePage = () => {
   }, [article_id]);
 
   useEffect(() => {
+    localStorage.setItem(
+      "voted",
+      JSON.stringify({
+        article_id: article_id,
+        voted: false,
+      })
+    );
     getCommentsByArticleId(article_id)
       .then((response) => {
-        const sortedComments = response.toSorted(
-          (a, b) => new Date(a.created_at) - new Date(b.created_at)
-        );
-        setComments(sortedComments);
+        setComments(response);
         setIsCommentsLoading(false);
       })
       .catch((err) => {
@@ -70,42 +77,78 @@ export const ArticlePage = () => {
   }, [article_id, navigate]);
 
   const onLikeArticleBtnClick = (id) => {
-    const body = { inc_votes: 1 };
-    voteArticleById(id, body)
-      .then((response) => {
-        setVotes((prevVotes) => {
-          let newVotes = prevVotes;
-          newVotes += 1;
-          return newVotes;
-        });
-        toast.success("thanks for your vote");
-      })
-      .catch((err) => {
-        toast.error("vote has not been added");
-      });
+    const votedArticle = JSON.parse(localStorage.getItem("voted"));
+    if (user) {
+      if (Number(votedArticle?.article_id) === id && !votedArticle.voted) {
+        const body = { inc_votes: 1 };
+        voteArticleById(id, body)
+          .then((response) => {
+            setVotes((prevVotes) => {
+              let newVotes = prevVotes;
+              newVotes += 1;
+              return newVotes;
+            });
+            toast.success("thanks for your vote");
+            localStorage.setItem(
+              "voted",
+              JSON.stringify({
+                article_id: article_id,
+                voted: true,
+              })
+            );
+          })
+          .catch((err) => {
+            toast.error("vote has not been added");
+          });
+      } else {
+        const body = { inc_votes: -1 };
+        voteArticleById(id, body)
+          .then((response) => {
+            setVotes((prevVotes) => {
+              let newVotes = prevVotes;
+              newVotes -= 1;
+              return newVotes;
+            });
+            toast.success("you removed your vote for this article");
+            localStorage.setItem(
+              "voted",
+              JSON.stringify({
+                article_id: article_id,
+                voted: false,
+              })
+            );
+          })
+          .catch((err) => {
+            toast.error("vote has not been removed");
+          });
+      }
+    } else {
+      toast.error("Please sign in before vote");
+    }
   };
 
   const onSubmit = (data) => {
-    const comment = {
-      username: "jessjelly",
-      body: newComment,
-    };
-    setNewComment("");
-    postNewComment(article_id, comment)
-      .then((response) => {
-        setComments((prevComments) => {
-          const commentsArr = [...prevComments];
-          commentsArr.unshift(response);
-          const sortedComments = commentsArr.toSorted(
-            (a, b) => new Date(a.created_at) - new Date(b.created_at)
-          );
-          return commentsArr;
+    if (user) {
+      const comment = {
+        username: user,
+        body: newComment,
+      };
+      setNewComment("");
+      postNewComment(article_id, comment)
+        .then((response) => {
+          setComments((prevComments) => {
+            const commentsArr = [...prevComments];
+            commentsArr.unshift(response);
+            return commentsArr;
+          });
+          toast.success("comment added!");
+        })
+        .catch((err) => {
+          toast.error("comment has not been added");
         });
-        toast.success("comment added!");
-      })
-      .catch((err) => {
-        toast.error("comment has not been added");
-      });
+    } else {
+      toast.error("Please sign in before leave comment");
+    }
   };
 
   watch((data) => {
@@ -199,16 +242,29 @@ export const ArticlePage = () => {
       />
 
       <p className="mt-5 text-[#508C9B] font-bold">Leave comment</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <p className="mb-2">User name: jessjelly</p>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
+        {user ? (
+          <p className="my-2">
+            <span className="font-bold">UserName:</span> {user}
+          </p>
+        ) : (
+          "Please sign in before leave comment"
+        )}
+
         <textarea
           {...register("text", { required: true, maxLength: 200 })}
           value={newComment}
-          className="border-2 border-[#508C9B] w-full mb-4"
+          className="border-2 border-[#508C9B] w-full mb-6"
         />
-        {errors?.text?.type === "required" && <p>This field is required</p>}
+        {errors?.text?.type === "required" && (
+          <p className="absolute text-red-700 bottom-11">
+            This field is required
+          </p>
+        )}
         {errors?.text?.type === "maxLength" && (
-          <p>You have exceeded the maximum number of characters</p>
+          <p className="absolute text-red-700 bottom-11">
+            You have exceeded the maximum number of characters
+          </p>
         )}
 
         <button type="submit" className="button mx-auto block">
