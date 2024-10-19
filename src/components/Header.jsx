@@ -1,18 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { SelectTopics } from "./SelectTopics";
 import { NavBar } from "./NavBar";
 import { UserContext } from "../components/UserContext";
 import { BurgerMenu } from "./BurgerMenu";
+import { getUser } from "../api";
 
 export const Header = () => {
   const { user } = useContext(UserContext);
+  const [userInfo, setUserInfo] = useState("");
   const userPagePath = `/users/${user}`;
-  let userName = "";
-  if (user) {
-    userName = user.slice(0, 1).toUpperCase();
-  }
 
   let [isOpen, setIsOpen] = useState(false);
 
@@ -23,6 +21,14 @@ export const Header = () => {
   const closeMenu = () => {
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (user) {
+      getUser(user).then((response) => {
+        setUserInfo(response);
+      });
+    }
+  }, [user]);
 
   return (
     <header className="shadow-lg py-3 fixed top-0 left-1/2 -translate-x-1/2 w-full bg-white z-10">
@@ -67,7 +73,11 @@ export const Header = () => {
               to={userPagePath}
               className="w-10 h-10 rounded-full bg-[#508C9B] flex justify-center items-center text-white "
             >
-              <p>{userName}</p>
+              <img
+                src={userInfo.avatar_url}
+                alt="user avatar"
+                className="w-10 h-10 mx-auto rounded-full object-cover border-2 border-[#508C9B]"
+              />
             </Link>
           ) : (
             <NavBar />

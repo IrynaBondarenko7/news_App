@@ -23,12 +23,12 @@ export const UserPage = () => {
   };
 
   return (
-    <section className="flex flex-col md:flex-row text-[#201E43] mt-10 mx-auto justify-center items-center gap-20">
+    <section className="flex flex-col md:flex-row text-[#201E43] mt-10 mx-auto justify-center items-center gap-10 md:gap-20">
       <div>
         <img
           src={userInfo.avatar_url}
           alt="user avatar"
-          className="w-[200px] h-[200px] mx-auto rounded-full object-scale-down border-2 border-[#508C9B]"
+          className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] mx-auto rounded-full object-cover border-2 border-[#508C9B]"
         />
       </div>
       <div className="">
