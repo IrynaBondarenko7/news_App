@@ -139,19 +139,19 @@ export const SignUpPage = () => {
               transition
               className={clsx(
                 "flex flex-wrap gap-1 w-[var(--button-width)] rounded-xl border border-main bg-main p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
-                "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0 "
+                "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0 z-10"
               )}
             >
               {avatars.map((avatar) => (
                 <ListboxOption
                   key={avatar.url}
                   value={avatar}
-                  className="w-14 h-12 group flex cursor-pointer items-center justify-center select-none data-[focus]:bg-white/10 hover:rounded-lg"
+                  className="w-12 h-10 md:w-14 md:h-12 group flex cursor-pointer items-center justify-center select-none data-[focus]:bg-white/10 hover:rounded-lg"
                 >
                   <img
                     src={avatar.url}
                     alt="avatar"
-                    className="w-14 h-12 object-contain rounded-md  transition-all "
+                    className="w-12 h-10 md:w-14 md:h-12 object-contain rounded-md  transition-all "
                   />
                 </ListboxOption>
               ))}
