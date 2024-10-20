@@ -57,7 +57,7 @@ export const SelectSortQueries = ({
   return (
     <div className="mb-10 flex flex-col md:flex-row md:justify-center gap-6 md:gap-20 ">
       <div className="md:w-[200px]">
-        <label className="text-[#201E43] mb-1 block"> Sort articles by</label>
+        <label className="text-accent mb-1 block"> Sort articles by</label>
         <Select
           name="sort"
           options={sortOptions}
@@ -66,7 +66,7 @@ export const SelectSortQueries = ({
         />
       </div>
       <div className="md:w-[200px]">
-        <label className="text-[#201E43] mb-1 block"> Sort articles in</label>
+        <label className="text-accent mb-1 block"> Sort articles in</label>
         <Select
           name="order"
           options={orderOptions}

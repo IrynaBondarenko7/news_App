@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { MainArticle } from "../components/MainArticle";
 import { PopularArticles } from "../components/PopularArticles";
-import { getArticles } from "../api";
 import { LatestArticles } from "../components/LatestArticles";
-import { Link } from "react-router-dom";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
+import { getArticles } from "../api";
 
 export const Home = () => {
   const [articles, setArticles] = useState([]);
@@ -27,7 +27,7 @@ export const Home = () => {
   if (isLoading) {
     return (
       <div className="w-full mx-auto">
-        <p className="text-center text-sm text-[#134B70] font-bold md:text-xl xl:text-4xl">
+        <p className="text-center text-sm text-secondAccent font-bold md:text-xl xl:text-4xl">
           Oops... <br />
           We use free Backend hosting and loading takes some time.
           <br />

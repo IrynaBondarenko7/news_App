@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getArticles } from "../api";
 import {
   Link,
   useParams,
@@ -8,12 +7,13 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { PiEyesFill } from "react-icons/pi";
+import { FaRegComments } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import { SelectSortQueries } from "../components/SelectSortQueries";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
-import { FaRegComments } from "react-icons/fa";
 import { BtnScrollTop } from "../components/BtnScrollTop";
+import { getArticles } from "../api";
 
 export const ArticlesList = () => {
   const [articles, setArticles] = useState([]);
@@ -49,7 +49,7 @@ export const ArticlesList = () => {
   if (isLoading) {
     return (
       <div className="w-full mx-auto my-20">
-        <p className="text-center text-sm text-[#134B70] font-bold md:text-xl xl:text-4xl">
+        <p className="text-center text-sm text-secondAccent font-bold md:text-xl xl:text-4xl">
           Loading...
         </p>
         <Loading />
@@ -84,7 +84,7 @@ export const ArticlesList = () => {
               className="flex gap-8 flex-col justify-center items-center w-full xl:w-[700px] rounded-lg p-5 pb-6 border-2 shadow-2xl"
             >
               <Link to={url}>
-                <h2 className="text-sm mt-2.5 underline text-[#134B70] font-bold md:text-lg hover:text-[#508C9B] focus:text-[#508C9B] transition-all">
+                <h2 className="text-sm mt-2.5 underline text-secondAccent font-bold md:text-lg hover:text-main focus:text-main transition-all">
                   {article.title}
                 </h2>
               </Link>

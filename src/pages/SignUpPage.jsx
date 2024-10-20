@@ -1,10 +1,8 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { UserContext } from "../components/UserContext";
-import { postUser } from "../api";
-import { useNavigate } from "react-router-dom";
 import {
   Listbox,
   ListboxButton,
@@ -12,7 +10,10 @@ import {
   ListboxOptions,
 } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import toast, { Toaster } from "react-hot-toast";
 import clsx from "clsx";
+import { UserContext } from "../components/UserContext";
+import { postUser } from "../api";
 import avatars from "../../data/avatars.json";
 
 const schema = yup
@@ -32,11 +33,6 @@ const schema = yup
         "Username can only contain letters and numbers, no spaces"
       )
       .max(15, "Username cannot exceed 15 characters"),
-
-    // avatar_url: yup
-    //   .string()
-    //   .required("required field")
-    //   .url("Avatar URL must be a valid URL"),
   })
   .required();
 
@@ -67,7 +63,11 @@ export const SignUpPage = () => {
         setUser(response.username);
         navigate(`/users/${response.username}`);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.status === 500) {
+          toast.error("user with that username already exists");
+        }
+      });
   };
 
   watch((data) => {
@@ -80,6 +80,7 @@ export const SignUpPage = () => {
 
   return (
     <section>
+      <Toaster position="top-center" reverseOrder={false} />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full relative md:w-[500px] mx-auto mt-6 flex flex-col gap-8"
@@ -89,7 +90,7 @@ export const SignUpPage = () => {
           <input
             placeholder="Hannah"
             {...register("name")}
-            className="border-2 border-[#508C9B] w-full p-2 rounded-md"
+            className="border-2 border-main w-full p-2 rounded-md"
           />
           <p className="absolute text-red-700 bottom-[-26px]">
             {errors.name?.message}
@@ -101,7 +102,7 @@ export const SignUpPage = () => {
           <input
             placeholder="hannah123"
             {...register("username")}
-            className="border-2 border-[#508C9B] w-full  p-2 rounded-md"
+            className="border-2 border-main w-full  p-2 rounded-md"
           />
           <p className="absolute text-red-700 bottom-[-26px]">
             {errors.username?.message}
@@ -118,14 +119,14 @@ export const SignUpPage = () => {
           >
             <ListboxButton
               className={clsx(
-                "relative block w-full rounded-lg bg-[#508C9B] py-1.5 pr-8 pl-3 text-left text-sm/6 text-white",
+                "relative block w-full rounded-lg bg-main py-1.5 pr-8 pl-3 text-left text-sm/6 text-white",
                 "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
               )}
             >
               <img
                 src={selected.url}
                 alt="avatar"
-                className="w-10 h-10 block object-cover rounded-full"
+                className="w-10 h-10 block object-contain rounded-full"
               />
 
               <ChevronDownIcon
@@ -137,20 +138,20 @@ export const SignUpPage = () => {
               anchor="bottom"
               transition
               className={clsx(
-                "flex flex-wrap gap-1 w-[var(--button-width)] rounded-xl border border-[#508C9B] bg-[#508C9B] p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
-                "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+                "flex flex-wrap gap-1 w-[var(--button-width)] rounded-xl border border-main bg-main p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
+                "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0 "
               )}
             >
               {avatars.map((avatar) => (
                 <ListboxOption
                   key={avatar.url}
                   value={avatar}
-                  className="w-14 h-12 group flex cursor-pointer items-center justify-center select-none data-[focus]:bg-white/10"
+                  className="w-14 h-12 group flex cursor-pointer items-center justify-center select-none data-[focus]:bg-white/10 hover:rounded-lg"
                 >
                   <img
                     src={avatar.url}
                     alt="avatar"
-                    className="w-14 h-12 object-cover rounded-md hover:rounded-xl transition-all "
+                    className="w-14 h-12 object-contain rounded-md  transition-all "
                   />
                 </ListboxOption>
               ))}

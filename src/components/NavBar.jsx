@@ -7,7 +7,7 @@ export const NavBar = ({ close }) => {
         <Link
           onClick={close}
           to="signin"
-          className="w-24 block bg-[#201E43] text-white text-center py-2 rounded-lg hover:scale-110 focus:scale-110 transition-all"
+          className="w-24 block bg-accent text-white text-center py-2 rounded-lg hover:scale-110 focus:scale-110 transition-all"
         >
           Sign in
         </Link>
@@ -16,7 +16,7 @@ export const NavBar = ({ close }) => {
         <Link
           onClick={close}
           to="signup"
-          className="w-24 block bg-[#201E43] text-white text-center py-2 rounded-lg hover:scale-110 focus:scale-110 transition-all"
+          className="w-24 block bg-accent text-white text-center py-2 rounded-lg hover:scale-110 focus:scale-110 transition-all"
         >
           Sign up
         </Link>
