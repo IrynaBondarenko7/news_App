@@ -39,7 +39,6 @@ export const Header = () => {
         >
           TrendNews
         </Link>
-
         <SelectTopics />
         <button
           onClick={openMenu}
