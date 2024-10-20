@@ -24,7 +24,7 @@ export const Comments = ({ comments, isLoading, isError, deleteComment }) => {
     <>
       {comments.length === 0 ? (
         <div className="w-[80%] mx-auto ">
-          <p className="text-center text-[#134B70] font-bold">
+          <p className="text-center text-secondAccent font-bold">
             Your comment may be the first
           </p>
           <DotLottieReact src="/comment.json" loop autoplay />

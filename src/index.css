@@ -26,7 +26,7 @@ textarea {
 }
 
 .button {
-  @apply bg-[#201E43] text-white w-full md:w-[300px] mx-auto py-2 rounded-lg hover:scale-110 focus:scale-110 transition-all;
+  @apply bg-accent text-white w-full md:w-[300px] mx-auto py-2 rounded-lg hover:scale-110 focus:scale-110 transition-all;
 }
 
 .swiper-scrollbar-drag {

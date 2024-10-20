@@ -79,7 +79,7 @@ export const SignInPage = () => {
           <input
             placeholder="hannah123"
             {...register("username")}
-            className="border-2 border-[#508C9B] w-full  p-2 rounded-md"
+            className="border-2 border-main w-full  p-2 rounded-md"
           />
           <p className="absolute text-red-700 bottom-[-26px]">
             {errors.username?.message}

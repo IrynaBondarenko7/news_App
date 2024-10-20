@@ -174,7 +174,7 @@ export const ArticlePage = () => {
   if (isLoading) {
     return (
       <div className="w-full mx-auto my-20">
-        <p className="text-center text-sm text-[#134B70] font-bold md:text-xl xl:text-4xl">
+        <p className="text-center text-sm text-secondAccent font-bold md:text-xl xl:text-4xl">
           Loading...
         </p>
         <Loading />
@@ -190,7 +190,7 @@ export const ArticlePage = () => {
     <section>
       <Link
         to="/articles"
-        className="left-5 flex gap-2 items-center mb-4 text-[#134B70] hover:text-[#508C9B] focus:text-[#508C9B] transition-all"
+        className="left-5 flex gap-2 items-center mb-4 text-secondAccent hover:text-main focus:text-main transition-all"
       >
         <FaLongArrowAltLeft />
         <p>Back to all articles</p>
@@ -241,7 +241,7 @@ export const ArticlePage = () => {
         deleteComment={onDeleteCommentBtnClick}
       />
 
-      <p className="mt-5 text-[#508C9B] font-bold">Leave comment</p>
+      <p className="mt-5 text-main font-bold">Leave comment</p>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
         {user ? (
           <p className="my-2">
@@ -254,7 +254,7 @@ export const ArticlePage = () => {
         <textarea
           {...register("text", { required: true, maxLength: 200 })}
           value={newComment}
-          className="border-2 border-[#508C9B] w-full mb-6"
+          className="border-2 border-main w-full mb-6"
         />
         {errors?.text?.type === "required" && (
           <p className="absolute text-red-700 bottom-11">

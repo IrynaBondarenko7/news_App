@@ -27,7 +27,7 @@ export const Home = () => {
   if (isLoading) {
     return (
       <div className="w-full mx-auto">
-        <p className="text-center text-sm text-[#134B70] font-bold md:text-xl xl:text-4xl">
+        <p className="text-center text-sm text-secondAccent font-bold md:text-xl xl:text-4xl">
           Oops... <br />
           We use free Backend hosting and loading takes some time.
           <br />

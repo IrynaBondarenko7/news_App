@@ -16,6 +16,11 @@ const config = {
           xl: "30px",
         },
       },
+      colors: {
+        main: "#508C9B",
+        accent: "#201E43",
+        secondAccent: "#134B70",
+      },
     },
   },
   plugins: [],
