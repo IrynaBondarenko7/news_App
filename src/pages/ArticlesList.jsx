@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getArticles } from "../api";
 import {
   Link,
   useParams,
@@ -8,12 +7,13 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { PiEyesFill } from "react-icons/pi";
+import { FaRegComments } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import { SelectSortQueries } from "../components/SelectSortQueries";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
-import { FaRegComments } from "react-icons/fa";
 import { BtnScrollTop } from "../components/BtnScrollTop";
+import { getArticles } from "../api";
 
 export const ArticlesList = () => {
   const [articles, setArticles] = useState([]);

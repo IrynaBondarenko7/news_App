@@ -1,10 +1,8 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { UserContext } from "../components/UserContext";
-import { postUser } from "../api";
-import { useNavigate } from "react-router-dom";
 import {
   Listbox,
   ListboxButton,
@@ -14,6 +12,8 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import toast, { Toaster } from "react-hot-toast";
 import clsx from "clsx";
+import { UserContext } from "../components/UserContext";
+import { postUser } from "../api";
 import avatars from "../../data/avatars.json";
 
 const schema = yup

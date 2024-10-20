@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { MainArticle } from "../components/MainArticle";
 import { PopularArticles } from "../components/PopularArticles";
-import { getArticles } from "../api";
 import { LatestArticles } from "../components/LatestArticles";
-import { Link } from "react-router-dom";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
+import { getArticles } from "../api";
 
 export const Home = () => {
   const [articles, setArticles] = useState([]);

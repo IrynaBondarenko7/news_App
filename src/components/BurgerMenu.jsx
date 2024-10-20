@@ -1,5 +1,5 @@
-import { Button, Dialog, DialogPanel, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { Button, Dialog, DialogPanel, Transition } from "@headlessui/react";
 import { MdClose } from "react-icons/md";
 
 export const BurgerMenu = ({ isOpen, close, children }) => {

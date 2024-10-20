@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../api";
 import { UserContext } from "../components/UserContext";
+import { getUser } from "../api";
 
 export const UserPage = () => {
   const { username } = useParams();

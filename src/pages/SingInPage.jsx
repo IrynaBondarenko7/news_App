@@ -2,10 +2,10 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { UserContext } from "../components/UserContext";
-import { getUser } from "../api";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import { UserContext } from "../components/UserContext";
+import { getUser } from "../api";
 
 const schema = yup
   .object({

@@ -1,20 +1,13 @@
 import { useEffect, useState, useContext } from "react";
-import {
-  deleteCommentById,
-  getArticleById,
-  getCommentsByArticleId,
-  postNewComment,
-  voteArticleById,
-} from "../api";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import toast, { Toaster } from "react-hot-toast";
-import { useForm } from "react-hook-form";
 import { Comments } from "../components/Comments";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
 import { UserContext } from "../components/UserContext";
+import { getArticleById, voteArticleById } from "../api";
 
 export const ArticlePage = () => {
   const { article_id } = useParams();
@@ -22,35 +15,12 @@ export const ArticlePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [votes, setVotes] = useState(0);
-  const [newComment, setNewComment] = useState("");
-  const [comments, setComments] = useState([]);
-  const [isCommentsLoading, setIsCommentsLoading] = useState(true);
-  const [isCommentsError, setIsCommentsError] = useState(false);
 
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({ mode: "onChange" });
 
   const date = new Date(article.created_at).toLocaleDateString();
   const time = new Date(article.created_at).toLocaleTimeString();
-
-  useEffect(() => {
-    getArticleById(article_id)
-      .then((response) => {
-        setArticle(response);
-        setVotes(response.votes);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setIsError(true);
-      });
-  }, [article_id]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -60,14 +30,15 @@ export const ArticlePage = () => {
         voted: false,
       })
     );
-    getCommentsByArticleId(article_id)
+    getArticleById(article_id)
       .then((response) => {
-        setComments(response);
-        setIsCommentsLoading(false);
+        setArticle(response);
+        setVotes(response.votes);
+        setIsLoading(false);
       })
       .catch((err) => {
-        setIsCommentsError(true);
-        setIsCommentsLoading(false);
+        setIsLoading(false);
+        setIsError(true);
         if (err.status === 404) {
           navigate("/articles/notfound");
         } else if (err.status === 400) {
@@ -125,50 +96,6 @@ export const ArticlePage = () => {
     } else {
       toast.error("Please sign in before vote");
     }
-  };
-
-  const onSubmit = (data) => {
-    if (user) {
-      const comment = {
-        username: user,
-        body: newComment,
-      };
-      setNewComment("");
-      postNewComment(article_id, comment)
-        .then((response) => {
-          setComments((prevComments) => {
-            const commentsArr = [...prevComments];
-            commentsArr.unshift(response);
-            return commentsArr;
-          });
-          toast.success("comment added!");
-        })
-        .catch((err) => {
-          toast.error("comment has not been added");
-        });
-    } else {
-      toast.error("Please sign in before leave comment");
-    }
-  };
-
-  watch((data) => {
-    setNewComment(data.text);
-  });
-
-  const onDeleteCommentBtnClick = (id) => {
-    deleteCommentById(id)
-      .then((response) => {
-        setComments((prevComments) => {
-          const filteredComments = prevComments.filter(
-            (comment) => comment.comment_id !== id
-          );
-          return filteredComments;
-        });
-        toast.success("comment deleted!");
-      })
-      .catch((err) => {
-        toast.error("comment has not been deleted");
-      });
   };
 
   if (isLoading) {
@@ -234,43 +161,7 @@ export const ArticlePage = () => {
           Comments <span>{article.comment_count}</span>
         </p>
       </div>
-      <Comments
-        comments={comments}
-        isLoading={isCommentsLoading}
-        isError={isCommentsError}
-        deleteComment={onDeleteCommentBtnClick}
-      />
-
-      <p className="mt-5 text-main font-bold">Leave comment</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full relative">
-        {user ? (
-          <p className="my-2">
-            <span className="font-bold">UserName:</span> {user}
-          </p>
-        ) : (
-          "Please sign in before leave comment"
-        )}
-
-        <textarea
-          {...register("text", { required: true, maxLength: 200 })}
-          value={newComment}
-          className="border-2 border-main w-full mb-6"
-        />
-        {errors?.text?.type === "required" && (
-          <p className="absolute text-red-700 bottom-11">
-            This field is required
-          </p>
-        )}
-        {errors?.text?.type === "maxLength" && (
-          <p className="absolute text-red-700 bottom-11">
-            You have exceeded the maximum number of characters
-          </p>
-        )}
-
-        <button type="submit" className="button mx-auto block">
-          Submit
-        </button>
-      </form>
+      <Comments article_id={article_id} />
       <Toaster position="top-center" reverseOrder={false} />
     </section>
   );

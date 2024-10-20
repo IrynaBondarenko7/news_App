@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Select from "react-select";
 import { useNavigate, useLocation } from "react-router-dom";
+import Select from "react-select";
 import { getTopics } from "../api";
 
 export const SelectTopics = () => {

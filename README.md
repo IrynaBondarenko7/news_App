@@ -34,7 +34,6 @@ The application is powered by a backend API that provides news data and handles 
 ├── README.md
 ├── src
 │   ├── api.js
-│   ├── App.css
 │   ├── App.jsx
 │   ├── assets
 │   ├── components
