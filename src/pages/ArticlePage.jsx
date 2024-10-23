@@ -155,12 +155,6 @@ export const ArticlePage = () => {
           </div>
         </div>
       </div>
-
-      <div className="flex justify-between my-4">
-        <p>
-          Comments <span>{article.comment_count}</span>
-        </p>
-      </div>
       <Comments article_id={article_id} />
       <Toaster position="top-center" reverseOrder={false} />
     </section>

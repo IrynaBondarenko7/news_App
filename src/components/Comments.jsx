@@ -96,6 +96,9 @@ export const Comments = ({ article_id }) => {
 
   return (
     <>
+      <p className="my-4">
+        Comments <span>{comments.length}</span>
+      </p>
       <Toaster position="top-center" reverseOrder={false} />
       {comments.length === 0 ? (
         <div className="w-[80%] mx-auto ">
