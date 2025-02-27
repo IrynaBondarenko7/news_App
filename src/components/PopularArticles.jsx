@@ -19,19 +19,22 @@ export const PopularArticles = ({ articles }) => {
         <Swiper
           direction={"vertical"}
           loop={true}
-          className="mySwiper h-[400px]"
+          className="mySwiper xl:h-[576px] h-[400px]"
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
           }}
           modules={[Autoplay]}
-          slidesPerView={2}
+          slidesPerView={3}
           spaceBetween={10}
         >
           {popularArticles.map((article) => {
             const url = `/articles/${article.article_id}`;
             return (
-              <SwiperSlide key={article.article_id} className="h-auto w-48">
+              <SwiperSlide
+                key={article.article_id}
+                className="h-auto xl:w-56 w-48"
+              >
                 <Link to={url}>
                   <img src={article.article_img_url} alt="article image" />
                   <h2 className="text-sm mt-2.5 font-bold">{article.title}</h2>

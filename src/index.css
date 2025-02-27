@@ -40,4 +40,5 @@ textarea {
 
 .swiper-slide {
   margin-bottom: 30px !important;
+  height: auto !important;
 }

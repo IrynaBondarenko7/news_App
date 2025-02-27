@@ -7,13 +7,26 @@ import { getUser } from "../api";
 export const UserPage = () => {
   const { username } = useParams();
   const [userInfo, setUserInfo] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
 
   useEffect(() => {
-    getUser(username).then((response) => {
-      setUserInfo(response);
-    });
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const response = await getUser(username);
+        setUserInfo(response);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (username) {
+      fetchUser();
+    }
   }, [username]);
 
   const onLogOutBtnClick = () => {
@@ -24,12 +37,14 @@ export const UserPage = () => {
 
   return (
     <section className="flex flex-col md:flex-row text-accent mt-10 mx-auto justify-center items-center gap-10 md:gap-20">
-      <div>
-        <img
-          src={userInfo.avatar_url}
-          alt="user avatar"
-          className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] mx-auto rounded-full object-contain border-2 border-main"
-        />
+      <div className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] mx-auto rounded-full border-2 border-main">
+        {!loading && userInfo?.avatar_url && (
+          <img
+            src={userInfo.avatar_url}
+            alt="user avatar"
+            className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] mx-auto rounded-full object-contain border-2 border-main"
+          />
+        )}
       </div>
       <div className="">
         <h2>

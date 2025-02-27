@@ -9,7 +9,8 @@ import { getUser } from "../api";
 
 export const Header = () => {
   const { user } = useContext(UserContext);
-  const [userInfo, setUserInfo] = useState("");
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(false);
   const userPagePath = `/users/${user}`;
 
   let [isOpen, setIsOpen] = useState(false);
@@ -23,10 +24,20 @@ export const Header = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      getUser(user).then((response) => {
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const response = await getUser(user);
         setUserInfo(response);
-      });
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchUser();
     }
   }, [user]);
 
@@ -72,11 +83,13 @@ export const Header = () => {
               to={userPagePath}
               className="w-10 h-10 rounded-full bg-main flex justify-center items-center text-white "
             >
-              <img
-                src={userInfo.avatar_url}
-                alt="user avatar"
-                className="w-10 h-10 mx-auto rounded-full object-contain border-2 border-main"
-              />
+              {!loading && userInfo?.avatar_url && (
+                <img
+                  src={userInfo.avatar_url}
+                  alt="user avatar"
+                  className="w-10 h-10 mx-auto rounded-full object-contain border-2 border-main"
+                />
+              )}
             </Link>
           ) : (
             <NavBar />
